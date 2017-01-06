@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
  
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get 'sessions/new'
+
   get 'users/new'
 
   get '/help' => "static_pages#help"
@@ -12,8 +15,13 @@ Rails.application.routes.draw do
 
   post '/signup' => "users#create"
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'static_pages#home'
+
+  get '/login' => "sessions#new"
+
+  post '/login' => "sessions#create"
+
+  delete '/logout' => "sessions#destroy"
 
   resources :users
 

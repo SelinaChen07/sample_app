@@ -22,7 +22,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   	assert_equal before_count+1, after_count
   	user=User.last
   	assert_redirected_to user_path(user)
+    follow_redirect!
+    assert_select "a[href=?]", login_path, count:0
+    assert_select "a[href=?]", logout_path
+    assert_select "li", "Users"
   end
-
 
 end
