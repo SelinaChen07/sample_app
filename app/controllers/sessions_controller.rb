@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   def new
+    
   end
 
   def create
@@ -12,7 +13,7 @@ class SessionsController < ApplicationController
         else
           @user.forget
         end
-  			redirect_to user_path(@user)
+        redirect_back_or(user_path(@user))
   	else
   		flash.now[:danger] = "Invalid email or password!"
   		render "new"
