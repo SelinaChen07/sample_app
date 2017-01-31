@@ -75,8 +75,18 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test "authenticate? should return false for a user with nil digest" do
-    assert_not @user.authenticate?('')
+  test "authenticate? with remember_token should return false for a user with nil token" do
+    assert_not @user.authenticate?("remember",'')
+  end
+
+  test "activation digest should be created when user sign up" do
+    @user.save
+    assert_not @user.activation_digest.nil?
+    assert_not @user.activation_token.nil?
+  end
+
+  test "authenticate? with activation_token should return false for a user with nil token" do
+    assert_not @user.authenticate?("activation",'')
   end
 
 end

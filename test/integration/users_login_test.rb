@@ -4,6 +4,9 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
+  def setup
+    @user = users(:chen)
+  end
 
   test "Show invalid login message only on the login page" do
   	get login_path
@@ -23,7 +26,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 #    end
     get login_path
     assert_template "sessions/new"
-    post login_path params:{session:{email:"chen@gmail.com", password:"password"}}
+#    post login_path params:{session:{email:"chen@gmail.com", password:"password"}}
+    log_in_as(@user)
     assert_not flash[:success].empty?
     assert_not session[:user_id].nil?
   #  assert_not cookies[:user_id].nil?
@@ -46,13 +50,15 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   end
 
     test "Valid login with remembering me" do
-      post login_path params:{session:{email:"chen@gmail.com", password: "password", remember_me: "1"}}
+  #   post login_path params:{session:{email:"chen@gmail.com", password: "password", remember_me: "1"}}
+      log_in_as(@user, 1)
       assert_not_empty cookies['remember_token'] 
 
     end
 
     test "Valid login with not remembering me" do
-      post login_path params:{session:{email:"chen@gmail.com", password: "password", remember_me: "0"}}
+  #    post login_path params:{session:{email:"chen@gmail.com", password: "password", remember_me: "0"}}
+      log_in_as(@user, 0)
       assert cookies['remember_token'].nil?
     end
 

@@ -8,9 +8,9 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 
-  def log_in_as(user)
+  def log_in_as(user, remember_me = 0)
  #  	session[:user_id] = user.id
- 	post login_path params:{session:{email:user.email, password:"password"}}
+ 	post login_path params:{session:{email:user.email, password:"password", remember_me: remember_me}}
   end
 
 
