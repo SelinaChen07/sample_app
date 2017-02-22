@@ -1,13 +1,57 @@
-	<div class="center jumbotron">
-		<h1>Sample App</h1>
-		<p>
-		  This is the home page for the
-		  <a href="http://www.railstutorial.org/">Ruby on Rails Tutorial</a>
-		  sample application.
-		</p>
-		<%= link_to "Sign Up now!", signup_path, class: "btn btn-lg btn-primary" %>
-	</div>
+	
+<% if logged_in? %>
+			<div class="row">
+				<aside class="col-md-4">
+					<section class="user_info">
+						<%= render "shared/user_info" %>
+					</section>
+					<section class="micropost_form" >
+						<%= render "shared/error_messages", object: @micropost %>
+						<%= form_for(@micropost, html:{multipart: true}) do |f| %>
+							<div  class="field">
+								<%= f.text_area :content, placeholder:"Compose your micropost here." %>
+							</div>
+							<%= f.submit "Post", class:"btn btn-primary" %>
+							<span class="picture">
+								<%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+							</span>
+						<% end %>
+					</section>
+				</aside>
+				<div class="col-md-8">
+					<% if @feed_items.any? %>					
+						<h3> Micropost Feed </h3>
+						<%= will_paginate @feed_items %>
+						<ol class="microposts" >
+							<%= render @feed_items %>
+						</ol>	
+						<%= will_paginate @feed_items %>
+					<% end %>				
+				</div>
+			</div>
+<% else %>
+		<div class="center jumbotron">
+			<h1>Sample App</h1>
+			<p>
+			  This is the home page for the
+			  <a href="http://www.railstutorial.org/">Ruby on Rails Tutorial</a>
+			  sample application.
+			</p>
+			<%= link_to "Sign Up now!", signup_path, class: "btn btn-lg btn-primary" %>
+		
+		</div>
 
 	<%= link_to image_tag("rails.png", alt: "Rails Logo"), 'http://rubyonrails.org' %>
 
 <!--	<%= image_tag("kitten.jpg", alt:"Kitten") %> -->
+
+<% end %>
+
+<script type="text/javascript">
+  $('#micropost_picture').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>

@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+
+	has_many :microposts, dependent: :destroy
+
 	attr_accessor :remember_token, :activation_token, :reset_token
 	before_save{self.email.downcase!}
 	before_create :create_activation_digest
@@ -8,6 +11,7 @@ class User < ApplicationRecord
 		uniqueness: {case_sensitive: false})
 	has_secure_password
 	validates(:password, presence:true, length:{minimum:6}, allow_nil:true)
+
 
 	def self.new_token
 		SecureRandom.urlsafe_base64
@@ -57,6 +61,10 @@ class User < ApplicationRecord
 
 	def reset_link_expired?
 		self.reset_send_at < 2.hours.ago
+	end
+
+	def feed
+		feed = Micropost.where(user_id: self.id)
 	end
 
 	private

@@ -15,3 +15,11 @@ User.create!(name:"Selina Chen", email: "chen@gmail.com", password: "123456", pa
 	User.create!(name: name, email: "example-#{n+2}@railstutorial.org", password: "password", password_confirmation: "password", activated: true, activated_at: Time.zone.now)
 end
 
+users = User.order(:created_at).take(5)
+
+users.each do |user|
+	50.times do |n|
+		content = Faker::Lorem.sentence
+		user.microposts.create(content: content)
+	end
+end
