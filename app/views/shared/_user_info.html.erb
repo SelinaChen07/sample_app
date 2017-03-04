@@ -1,6 +1,6 @@
 <h1>
-	<%= gravatar_for(@user, size:80) %>
-	<%= @user.name %>
+	<%= gravatar_for(current_user, size:80) %>
+	<%= current_user.name %>
 </h1>
-<span><%= link_to "View my profile here", user_path(@user)%></span>
-<span><%= pluralize @user.microposts.count, "micropost"%></span>
+<span><%= link_to "View my profile here", user_path(current_user)%></span>
+<span><%= pluralize current_user.microposts.count, "micropost"%></span>

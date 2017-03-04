@@ -1,6 +1,13 @@
 class User < ApplicationRecord
 
 	has_many :microposts, dependent: :destroy
+	#followers - followeds, Many-to-many association through Model Relationship(follower_id followed_id)
+	#one user has many following
+	#one user has many followers
+	has_many :active_relationships, foreign_key: "follower_id", class_name: "Relationship", dependent: :destroy
+	has_many :following, through: :active_relationships, source: :followed
+	has_many :passive_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
+	has_many :followers, through: :passive_relationships, source: :follower
 
 	attr_accessor :remember_token, :activation_token, :reset_token
 	before_save{self.email.downcase!}
@@ -64,7 +71,34 @@ class User < ApplicationRecord
 	end
 
 	def feed
-		feed = Micropost.where(user_id: self.id)
+	#	feed = Micropost.where(user_id: self.id)
+	
+	#   too much enquiries
+	#	feed = self.microposts
+	#	self.following.each do |followed|
+	#		feed << followed.microposts
+	#	end
+
+		following_id = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+		feed = Micropost.where("user_id IN (#{following_id}) OR user_id = :user_id", user_id: self.id)
+
+	end
+
+	def follow(other_user)
+		# active_relationships.create(followed_id: other_user.id) unless other_user.nil?
+		following << other_user unless other_user.nil?
+	end
+
+	def unfollow(other_user)
+	#	unless other_user.nil?
+	#		r = active_relationships.find_by(followed_id: other_user.id) 
+	#		r.destroy if r
+	#	end
+		following.delete(other_user)
+	end
+
+	def following?(other_user)
+		following.include?(other_user)
 	end
 
 	private

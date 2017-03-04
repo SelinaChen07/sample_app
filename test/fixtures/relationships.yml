@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  follower: chen
+  followed: ma
+
+two:
+  follower: chen
+  followed: jiang
+
+three:
+  follower: ma
+  followed: chen 
+
+four:
+  follower: li
+  followed: chen

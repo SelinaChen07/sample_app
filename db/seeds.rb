@@ -23,3 +23,9 @@ users.each do |user|
 		user.microposts.create(content: content)
 	end
 end
+
+user = User.find(2)
+following = User.take(52)[2..51]
+followers = User.take(52)[3..51]
+following.each {|followed| user.follow(followed)}
+followers.each {|follower| follower.follow(user) }

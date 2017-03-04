@@ -5,6 +5,9 @@
 					<section class="user_info">
 						<%= render "shared/user_info" %>
 					</section>
+					<section class="stats">
+						<%= render "shared/stats", user: current_user %>
+					</section>
 					<section class="micropost_form" >
 						<%= render "shared/error_messages", object: @micropost %>
 						<%= form_for(@micropost, html:{multipart: true}) do |f| %>

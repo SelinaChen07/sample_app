@@ -89,4 +89,22 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.authenticate?("activation",'')
   end
 
+  test "feed should get the correct feeds" do
+    chen = users(:chen)
+    ma = users(:ma)
+    li = users(:li)
+    #should include self's posts
+    chen.microposts.each do |micropost|
+      assert chen.feed.include?(micropost)
+    end
+    #should include followed user's posts
+    ma.microposts.each do |micropost|
+      assert chen.feed.include?(micropost)
+    end
+    #should not include unfollowed user's posts
+    li.microposts.each do |micropost|
+      assert_not chen.feed.include?(micropost)
+    end 
+  end
+
 end
